@@ -169,7 +169,6 @@
     75% { transform: translateX(-2px); }
   }
 
-  /* Música controle */
   .audio-control {
     position: fixed;
     top: 15px;
@@ -206,8 +205,7 @@
     Você é minha constelação favorita.
   </p>
 
-  <button onclick="mostrarMensagem()">Clique aqui 💕</button>
-
+  <button id="clickButton">Clique aqui 💕</button>
   <div class="message" id="message"></div>
 </div>
 
@@ -229,12 +227,20 @@
     "Minha vida ganhou órbita quando você chegou. 🚀",
   ];
 
+  let mensagensDisponiveis = [...mensagens]; // clone para evitar repetição
   const audio = document.getElementById('musica');
   const audioControl = document.getElementById('audioControl');
+  const clickButton = document.getElementById('clickButton');
   let musicaTocando = false;
 
   function mostrarMensagem() {
-    const msg = mensagens[Math.floor(Math.random() * mensagens.length)];
+    if (mensagensDisponiveis.length === 0) {
+      mensagensDisponiveis = [...mensagens]; // reset quando todas forem exibidas
+    }
+
+    const index = Math.floor(Math.random() * mensagensDisponiveis.length);
+    const msg = mensagensDisponiveis.splice(index, 1)[0]; // remove do array para não repetir
+
     const messageDiv = document.getElementById("message");
     messageDiv.style.opacity = 0;
     setTimeout(() => {
@@ -242,11 +248,8 @@
       messageDiv.style.opacity = 1;
     }, 150);
 
-    for (let i = 0; i < 8; i++) {
-      criarCoracao(i * 100);
-    }
+    criarCoracoes(8);
 
-    // Tocar música apenas após interação (compatível iOS/Android)
     if (!musicaTocando) {
       audio.volume = 0.15;
       audio.play().catch(() => console.log("Interação necessária para tocar áudio"));
@@ -255,15 +258,19 @@
     }
   }
 
-  function criarCoracao(delay = 0) {
-    const heart = document.createElement("div");
-    heart.className = "heart";
-    heart.innerText = "💖";
-    heart.style.left = Math.random() * 100 + "vw";
-    heart.style.animationDelay = `${delay}ms`;
-    document.body.appendChild(heart);
-    setTimeout(() => heart.remove(), 5000);
+  function criarCoracoes(qtd = 8) {
+    for (let i = 0; i < qtd; i++) {
+      const heart = document.createElement("div");
+      heart.className = "heart";
+      heart.innerText = "💖";
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.animationDelay = `${i * 100}ms`;
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 5000);
+    }
   }
+
+  clickButton.addEventListener('click', mostrarMensagem);
 
   audioControl.addEventListener('click', () => {
     if (audio.paused) {
