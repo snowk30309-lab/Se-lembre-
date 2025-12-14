@@ -19,12 +19,13 @@
         rgba(20, 5, 40, 0.85)
       ),
       url("minha-foto.jpg.JPG") center/cover no-repeat;
-    animation: bgZoom 60s ease-in-out infinite alternate;
+    animation: bgPulse 10s ease-in-out infinite alternate;
   }
 
-  @keyframes bgZoom {
-    0% { background-size: cover; }
-    100% { background-size: 110% auto; }
+  @keyframes bgPulse {
+    0% { transform: scale(1); filter: brightness(1); }
+    50% { transform: scale(1.02); filter: brightness(1.1); }
+    100% { transform: scale(1); filter: brightness(1); }
   }
 
   /* ESTRELAS */
@@ -38,6 +39,7 @@
       500px 600px white, 700px 800px white, 900px 100px white,
       1100px 300px white, 1300px 500px white, 1500px 700px white;
     animation: animStars 60s linear infinite;
+    opacity: 0.8;
   }
 
   .stars2 {
@@ -45,6 +47,7 @@
       50px 150px white, 250px 350px white, 450px 550px white,
       650px 750px white, 850px 950px white, 1050px 1150px white;
     animation-duration: 90s;
+    opacity: 0.6;
   }
 
   .stars3 {
@@ -52,6 +55,7 @@
       80px 280px white, 280px 480px white, 480px 680px white,
       680px 880px white, 880px 1080px white;
     animation-duration: 120s;
+    opacity: 0.4;
   }
 
   @keyframes animStars {
@@ -67,6 +71,12 @@
     padding: 20px;
     max-width: 400px;
     margin: 0 auto;
+    animation: fadeIn 3s ease-in-out forwards;
+  }
+
+  @keyframes fadeIn {
+    0% { opacity: 0; transform: translateY(-50px); }
+    100% { opacity: 1; transform: translateY(-50%); }
   }
 
   .title {
@@ -79,27 +89,28 @@
     -webkit-text-fill-color: transparent;
     text-shadow: 0 0 35px rgba(255, 122, 217, 0.8);
     margin-bottom: 15px;
-    animation: pulseGlow 3s ease-in-out infinite;
+    animation: pulseGlow 2.5s ease-in-out infinite alternate;
   }
 
   @keyframes pulseGlow {
-    0%, 100% {
-      text-shadow:
-        0 0 25px rgba(255, 122, 217, 0.6),
-        0 0 50px rgba(255, 122, 217, 0.5);
-    }
-    50% {
-      text-shadow:
-        0 0 40px rgba(255, 122, 217, 1),
-        0 0 70px rgba(255, 122, 217, 0.9);
-    }
+    0% { text-shadow: 0 0 25px rgba(255,122,217,0.6), 0 0 50px rgba(255,122,217,0.5);}
+    50% { text-shadow: 0 0 50px rgba(255,0,150,1), 0 0 80px rgba(255,0,150,0.9);}
+    100% { text-shadow: 0 0 25px rgba(255,122,217,0.6), 0 0 50px rgba(255,122,217,0.5);}
   }
 
   .subtitle {
     font-size: 1.2em;
-    color: #f0eaff;
+    color: #ffd6f7;
     margin-bottom: 25px;
     line-height: 1.4;
+    animation: textShake 4s infinite;
+  }
+
+  @keyframes textShake {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(-1deg); }
+    50% { transform: rotate(1deg); }
+    75% { transform: rotate(-1deg); }
   }
 
   button {
@@ -112,12 +123,12 @@
     font-size: 1.2em;
     box-shadow: 0 0 30px rgba(255,122,217,0.8);
     cursor: pointer;
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
   }
 
   button:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 40px rgba(255, 122, 217, 1);
+    transform: scale(1.1) rotate(-2deg);
+    box-shadow: 0 0 50px rgba(255, 0, 150, 1);
   }
 
   .message {
@@ -128,13 +139,19 @@
     color: #ffd6f7;
     font-style: italic;
     user-select: none;
+    animation: fadeMessage 1.5s ease forwards;
+  }
+
+  @keyframes fadeMessage {
+    0% { opacity: 0; transform: translateY(20px);}
+    100% { opacity: 1; transform: translateY(0);}
   }
 
   .heart {
     position: absolute;
     bottom: 0;
     font-size: 22px;
-    animation: float 5s ease-in forwards;
+    animation: float 5s ease-in forwards, shake 0.5s infinite alternate;
     user-select: none;
     pointer-events: none;
   }
@@ -145,13 +162,20 @@
     100% { transform: translateY(-100vh) scale(0.8); opacity: 0; }
   }
 
+  @keyframes shake {
+    0%,100% { transform: translateX(0); }
+    25% { transform: translateX(-2px); }
+    50% { transform: translateX(2px); }
+    75% { transform: translateX(-2px); }
+  }
+
   /* Música controle */
   .audio-control {
     position: fixed;
     top: 15px;
     right: 15px;
     z-index: 999;
-    background: rgba(255, 122, 217, 0.85);
+    background: rgba(255, 0, 150, 0.85);
     border-radius: 50px;
     padding: 8px 15px;
     font-size: 1em;
@@ -159,12 +183,12 @@
     color: white;
     cursor: pointer;
     user-select: none;
-    box-shadow: 0 0 15px rgba(255, 122, 217, 0.7);
+    box-shadow: 0 0 20px rgba(255, 0, 150, 0.7);
     transition: background-color 0.3s ease;
   }
 
   .audio-control:hover {
-    background: rgba(255, 122, 217, 1);
+    background: rgba(255, 0, 150, 1);
   }
 </style>
 </head>
@@ -178,9 +202,8 @@
 <div class="container">
   <h1 class="title">Se lembre, meu amor</h1>
   <p class="subtitle">
-    Quando as estrelas brilham, é o meu amor que ilumina você.<br>
-    Mesmo longe, somos dois corpos celestes em órbita perfeita.<br>
-    Você é minha constelação favorita no céu da vida.
+    Meu amor brilha mais que todas as estrelas.<br>
+    Você é minha constelação favorita.
   </p>
 
   <button onclick="mostrarMensagem()">Clique aqui 💕</button>
@@ -188,11 +211,11 @@
   <div class="message" id="message"></div>
 </div>
 
-<!-- Controle de música -->
-<div class="audio-control" id="audioControl">🔈 Música ON</div>
+<div class="audio-control" id="audioControl">🔇 Música OFF</div>
 
 <audio id="musica" loop>
   <source src="https://cdn.pixabay.com/download/audio/2022/03/22/audio_6db3db9d42.mp3?filename=soft-romantic-piano-7142.mp3" type="audio/mp3" />
+  <source src="https://cdn.pixabay.com/download/audio/2022/03/22/audio_6db3db9d42.ogg" type="audio/ogg" />
   Seu navegador não suporta áudio.
 </audio>
 
@@ -206,14 +229,29 @@
     "Minha vida ganhou órbita quando você chegou. 🚀",
   ];
 
-  function mostrarMensagem() {
-    // Mensagem aleatória
-    const msg = mensagens[Math.floor(Math.random() * mensagens.length)];
-    document.getElementById("message").innerText = msg;
+  const audio = document.getElementById('musica');
+  const audioControl = document.getElementById('audioControl');
+  let musicaTocando = false;
 
-    // Cria múltiplos corações para mais animação
+  function mostrarMensagem() {
+    const msg = mensagens[Math.floor(Math.random() * mensagens.length)];
+    const messageDiv = document.getElementById("message");
+    messageDiv.style.opacity = 0;
+    setTimeout(() => {
+      messageDiv.innerText = msg;
+      messageDiv.style.opacity = 1;
+    }, 150);
+
     for (let i = 0; i < 8; i++) {
-      criarCoracao(i * 150);
+      criarCoracao(i * 100);
+    }
+
+    // Tocar música apenas após interação (compatível iOS/Android)
+    if (!musicaTocando) {
+      audio.volume = 0.15;
+      audio.play().catch(() => console.log("Interação necessária para tocar áudio"));
+      musicaTocando = true;
+      audioControl.innerText = '🔈 Música ON';
     }
   }
 
@@ -227,24 +265,15 @@
     setTimeout(() => heart.remove(), 5000);
   }
 
-  // Música background
-  const audio = document.getElementById('musica');
-  const audioControl = document.getElementById('audioControl');
-
-  // Tocar automaticamente (muted para não bloquear autoplay em alguns navegadores)
-  audio.volume = 0.15;
-  audio.play().catch(() => {
-    // se não puder tocar sem interação, fica parado até clicar botão
-    audioControl.innerText = '🔇 Música OFF (clique para ativar)';
-  });
-
   audioControl.addEventListener('click', () => {
-    if(audio.paused){
-      audio.play();
+    if (audio.paused) {
+      audio.play().catch(() => console.log("Interação necessária para tocar áudio"));
       audioControl.innerText = '🔈 Música ON';
+      musicaTocando = true;
     } else {
       audio.pause();
       audioControl.innerText = '🔇 Música OFF';
+      musicaTocando = false;
     }
   });
 </script>
